@@ -126,7 +126,9 @@ public class GlobalExceptionHandler {
             errorCode = HttpStatus.BAD_REQUEST;
         } else if (ex instanceof BindException) {
             errorCode = HttpStatus.BAD_REQUEST;
-        } else {
+        } else if (ex instanceof ProductPurchaseException) {
+            errorCode = HttpStatus.BAD_REQUEST;
+        }  else {
             logger.warn("Unknown exception type: {}", ex.getClass().getName());
             errorCode = HttpStatus.INTERNAL_SERVER_ERROR;
         }

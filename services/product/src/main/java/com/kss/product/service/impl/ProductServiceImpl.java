@@ -1,8 +1,10 @@
 package com.kss.product.service.impl;
 
 import com.kss.product.dto.ProductDto;
+import com.kss.product.dto.ProductPurchaseRequestDto;
 import com.kss.product.dto.ProductPurchaseResponseDto;
 import com.kss.product.entity.Product;
+import com.kss.product.exceptions.ProductPurchaseException;
 import com.kss.product.exceptions.RecordNotFoundException;
 import com.kss.product.repo.ProductRepository;
 import com.kss.product.service.ProductService;
@@ -11,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -30,8 +34,39 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductPurchaseResponseDto> purchaseProducts(List<ProductPurchaseResponseDto> request) {
-        return null;
+    public List<ProductPurchaseResponseDto> purchaseProducts(List<ProductPurchaseRequestDto> request) {
+
+        var productIds = request
+                .stream()
+                .map(ProductPurchaseRequestDto::productId)
+                .toList();
+        List<Product> storedProducts = repository.findAllByIdInOrderById(productIds);
+        if (productIds.size() != storedProducts.size()) {
+            throw new ProductPurchaseException("One or more products does not exist");
+        }
+        var sortedRequest = request
+                .stream()
+                .sorted(Comparator.comparing(ProductPurchaseRequestDto::productId))
+                .toList();
+        var purchasedProducts = new ArrayList<ProductPurchaseResponseDto>();
+        for (int i = 0; i < storedProducts.size(); i++) {
+            var product = storedProducts.get(i);
+            var productRequest = sortedRequest.get(i);
+            if (product.getAvailableQuantity() < productRequest.quantity()) {
+                throw new ProductPurchaseException("Insufficient stock quantity for product with ID:: " + productRequest.productId());
+            }
+            var newAvailableQuantity = product.getAvailableQuantity() - productRequest.quantity();
+            product.setAvailableQuantity(newAvailableQuantity);
+            repository.save(product);
+            ProductPurchaseResponseDto responseDto = new ProductPurchaseResponseDto();
+            responseDto.setProductId(product.getId());
+            responseDto.setName(product.getName());
+            responseDto.setQuantity(productRequest.quantity());
+            responseDto.setPrice(product.getPrice());
+            responseDto.setDescription(product.getDescription());
+
+            purchasedProducts.add(responseDto);        }
+        return purchasedProducts;
     }
 
     @Override

@@ -1,12 +1,17 @@
 package com.kss.product.dto;
 
-import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record ProductPurchaseResponseDto (
-        Integer productId,
-        String name,
-        String description,
-        BigDecimal price,
-double quantity
-) {
-        }
+import java.math.BigDecimal;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductPurchaseResponseDto {
+        private Integer productId;
+        private String name;
+        private String description;
+        private BigDecimal price;
+        private double quantity;
+}

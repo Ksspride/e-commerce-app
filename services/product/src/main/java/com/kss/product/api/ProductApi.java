@@ -1,6 +1,7 @@
 package com.kss.product.api;
 
 import com.kss.product.dto.ProductDto;
+import com.kss.product.dto.ProductPurchaseRequestDto;
 import com.kss.product.dto.ProductPurchaseResponseDto;
 import com.kss.product.service.ProductService;
 import jakarta.validation.Valid;
@@ -31,7 +32,7 @@ public class ProductApi {
 
     @PostMapping("/purchase")
     public ResponseEntity<List<ProductPurchaseResponseDto>> purchaseProducts(
-            @RequestBody List<ProductPurchaseResponseDto> request
+            @RequestBody List<ProductPurchaseRequestDto> request
     ) {
         return ResponseEntity.ok(service.purchaseProducts(request));
     }
