@@ -1,7 +1,7 @@
 package com.kss.order.dto;
 
 import com.kss.order.enums.PaymentMethod;
-import com.kss.order.product.PurchaseRequest;
+import com.kss.order.product.ProductPurchaseRequestDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -28,5 +28,5 @@ public class OrderRequestDto {
     @NotBlank(message = "Customer should be present")
     private String customerId;
     @NotEmpty(message = "You should at least purchase one product")
-    private List<PurchaseRequest> products;
+    private List<ProductPurchaseRequestDto> products;
 }
