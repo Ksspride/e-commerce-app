@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderLineRequest {
-    Integer id;
-    Integer orderId;
-    Integer productId;
-    double quantity;
+    private Integer id;
+    private Integer orderId;
+    private Integer productId;
+    private double quantity;
 }

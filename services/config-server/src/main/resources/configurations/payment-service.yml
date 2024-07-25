@@ -1,0 +1,22 @@
+server:
+  port: 8060
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/payment
+    username: keerthi
+    password: keerthi
+    driver-class-name: org.postgresql.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
+      database: postgresql
+    kafak:
+      producer:
+        bootstrap-services: localhost:9092
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+        properties:
+          spring.json.type.mapping: paymentConfirmation:com.kss.payment.notification.PaymentNotificationRequest
+application:
+  config:
+    product-url: http://localhost:8222/api/v1/products
