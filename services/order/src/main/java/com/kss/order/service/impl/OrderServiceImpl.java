@@ -6,8 +6,6 @@ import com.kss.order.dto.OrderLineRequest;
 import com.kss.order.dto.OrderRequestDto;
 import com.kss.order.dto.OrderResponseDto;
 import com.kss.order.entity.Order;
-import com.kss.order.exceptions.BadRequestException;
-import com.kss.order.exceptions.BusinessException;
 import com.kss.order.kafka.OrderConfirmation;
 import com.kss.order.kafka.OrderProducer;
 import com.kss.order.payment.PaymentClient;
@@ -50,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
         //Check the customer -->OpenFeign
         var customer = customerClient.findCustomerById(request.getCustomerId());
         if(customer == null){
-            throw new BusinessException("Cannot create order");
+            throw new IllegalArgumentException("Cannot create order");
         }
 
         //Purchase the product--> Product microservice
@@ -98,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDto findById(Integer orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(()-> new BadRequestException("Invalid order id"));
+        Order order = orderRepository.findById(orderId).orElseThrow(()-> new IllegalArgumentException("Invalid order id"));
         log.info("Returning the order id: {}", order.getId());
         return ObjectMapperUtils.map(order, OrderResponseDto.class);
     }

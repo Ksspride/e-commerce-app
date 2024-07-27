@@ -2,7 +2,7 @@ package com.kss.notification.entity;
 
 import com.kss.notification.enums.NotificationType;
 import com.kss.notification.kafka.order.OrderConfirmation;
-import com.kss.notification.payment.PaymentConfirmation;
+import com.kss.notification.kafka.payment.PaymentConfirmation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

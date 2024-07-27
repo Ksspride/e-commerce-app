@@ -1,7 +1,6 @@
 package com.kss.order.product;
 
 
-import com.kss.order.exceptions.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -41,7 +40,7 @@ public class ProductClient {
                 responseType
         );
         if(responseEntity.getStatusCode().isError()){
-            throw new BusinessException("An error occurred while processing the product purchase ");
+            throw new IllegalArgumentException("An error occurred while processing the product purchase ");
         }
         return responseEntity.getBody();
     }

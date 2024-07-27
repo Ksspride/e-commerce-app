@@ -8,17 +8,17 @@ spring:
       hibernate:
         ddl-auto: update
       database: postgresql
-    kafak:
+    kafka:
       producer:
-        bootstrap-services: localhost:9092
+        bootstrap-servers: localhost:9092
         key-serializer: org.apache.kafka.common.serialization.StringSerializer
         value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
         properties:
-          spring.son.type.mapping: orderConfirmation:com.kss.order.kafka.OrderConfirmation
-  server:
-    port: 8070
-  application:
-    config:
-      customer-url: http://localhost:8222/api/v1/customers
-      payment-url: http://localhost:8222/api/v1/payments
-      product-url: http://localhost:8222/api/v1/products
+          spring.json.type.mapping: orderConfirmation:com.kss.order.kafka.OrderConfirmation
+server:
+  port: 8070
+application:
+  config:
+    customer-url: http://localhost:8222/api/v1/customers
+    payment-url: http://localhost:8222/api/v1/payments
+    product-url: http://localhost:8222/api/v1/products

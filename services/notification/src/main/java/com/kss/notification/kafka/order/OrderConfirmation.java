@@ -1,6 +1,6 @@
 package com.kss.notification.kafka.order;
 
-import com.kss.notification.payment.PaymentMethod;
+import com.kss.notification.kafka.payment.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
