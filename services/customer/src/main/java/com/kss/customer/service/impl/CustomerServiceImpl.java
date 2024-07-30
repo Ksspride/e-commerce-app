@@ -1,7 +1,9 @@
 package com.kss.customer.service.impl;
 
+import com.kss.customer.dto.AddressDto;
 import com.kss.customer.dto.CustomerDto;
 import com.kss.customer.entity.Customer;
+import com.kss.customer.exceptions.RecordNotFoundException;
 import com.kss.customer.repo.CustomerRepository;
 import com.kss.customer.service.CustomerService;
 import com.kss.customer.utils.ObjectMapperUtils;
@@ -26,21 +28,29 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerDto> findAllCustomers() {
-        return null;
+        return ObjectMapperUtils.mapAll(repository.findAll(), CustomerDto.class);
     }
 
     @Override
     public Boolean existsById(String customerId) {
-        return null;
+        return repository.findById(customerId).isPresent();
     }
 
     @Override
     public CustomerDto findById(String customerId) {
-        return null;
+        CustomerDto customerDto =new CustomerDto();
+        Customer savedCustomer = repository.findById(customerId).orElseThrow(()-> new RecordNotFoundException("Customer with request id not found"));
+        customerDto.setId(savedCustomer.getId());
+        customerDto.setEmail(savedCustomer.getEmail());
+        customerDto.setFirstName(savedCustomer.getFirstName());
+        customerDto.setLastName(savedCustomer.getLastName());
+        customerDto.setAddress(ObjectMapperUtils.map(savedCustomer.getAddress(), AddressDto.class));
+        return customerDto;
     }
 
     @Override
     public void deleteCustomer(String customerId) {
+        repository.deleteById(customerId);
 
     }
 }

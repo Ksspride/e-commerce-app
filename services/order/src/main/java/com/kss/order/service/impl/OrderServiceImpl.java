@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
     public Integer createOrder(OrderRequestDto request) {
         //Check the customer -->OpenFeign
         var customer = customerClient.findCustomerById(request.getCustomerId());
-        if(customer == null){
+        if(customer.isEmpty()){
             throw new IllegalArgumentException("Cannot create order");
         }
 
@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
                 request.getPaymentMethod(),
                 order.getId(),
                 order.getReference(),
-                ObjectMapperUtils.map(customer, CustomerDto.class)
+                customer.get()
         );
         paymentClient.createPayment(paymentRequest);
 
@@ -78,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
                         request.getReference(),
                         request.getAmount(),
                         request.getPaymentMethod(),
-                        ObjectMapperUtils.map(customer, CustomerDto.class),
+                        customer.get(),
                         purchasedProducts
                 )
         );
